@@ -1,0 +1,214 @@
+1.
+#include <string>
+#include <windows.h>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	double a;
+	double b;
+	double c;
+	double d;
+	double f;
+	cin >> a;
+	cin >> b;
+	cin >> c;
+	cin >> d;
+	cin >> f;
+	
+	cout << (a + b + c + d + f) / 5.;
+
+	return 0;
+
+
+}
+2.
+#include <string>
+#include <windows.h>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	
+	int b;
+	cout << "Write down your age";
+	cin >> b;
+	if (b <= 18)
+	{
+
+
+
+
+		cout << " Your age is not 18, go out";
+		false;
+
+
+	}
+	if ( b >= 18)
+	{
+
+		cout << " go in";
+		true;
+
+
+	}
+
+	return 0;
+
+
+}
+3.
+#include <string>
+#include <windows.h>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+
+	char b;
+	cin >> b;
+	cout << (int)b;
+
+
+
+}
+4.
+#include <string>
+#include <windows.h>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+
+	
+	int a = 1;
+	int b = 2;
+	int c = 3;
+	int d = 4;
+	int arr[4]{ a,b,c,d };
+
+
+
+
+	
+
+	cout << "Choose the action";
+		int y;
+		cin >> y;
+
+	
+		if (y == 1)
+		{
+
+			cout << "You are meet the dragon, be careful!";
+
+
+		}
+		if (y == 2)
+		{
+
+			cout << "You find a golden chest, wow!";
+
+
+		}
+		if (y == 3)
+		{
+
+			cout << "You are meet a river,its good";
+
+
+		}
+		if (y == 4)
+		{
+
+			cout << "You are at your first position";
+
+
+		}
+		if (y > 4)
+		{
+
+			cout << "You have only 4 chooses";
+
+
+		}
+	
+
+
+	
+
+
+
+}
+5.
+#include <string>
+#include <windows.h>
+#include <cstdlib> 
+#include <iostream>
+#include <stdafx.h>
+#include <stdio.h>
+using namespace std;
+
+int main()
+{
+	
+    string player;
+    string options[3]{ "stone","cuts","paper" };
+    srand(time(NULL));
+    cout << "Put: stone or cuts or paper";
+    cin >> player;
+    string computer = options[rand() % 3];
+    cout << " computer put :" << computer << endl;
+    if (player == computer)
+    {
+        cout << "tie";
+    }
+    else
+        if ((player == "stone" && computer == "cuts") ||
+            (player == "cuts" && computer == "stone") ||
+            (player == "paper" && computer == "stone"))
+        {
+
+            cout << "You won";
+
+
+
+        }
+
+        else
+            cout << "computer is winner";
+
+}
+6.
+#include <string>
+#include <windows.h>
+#include <cstdlib> 
+#include <iostream>
+using namespace std;
+
+int main()
+{
+
+	double b
+		
+		
+		;
+	double n = 0;
+	double monts = 0;
+
+	cin >> b;
+	int c = 1000;
+	while ( n < c)
+	{
+		n += b;
+		monts++;
+
+	}
+	cout << monts;
+	return 0;
+
+}
