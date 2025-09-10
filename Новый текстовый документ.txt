@@ -1,161 +1,220 @@
-1.
-#include <string>
-#include <windows.h>
 #include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
 using namespace std;
+
+// Прототипы функций 
+void showMenu();
+
+// 1. Переменные
+void task1();
+
+// 2. Типы данных
+void task2_1(); // int, double
+void task2_2(); // bool
+void task2_3(); // char
+
+// 3. switch-case
+void task3();
+
+// 4. if-else (камень-ножницы-бумага)
+void task4();
+
+void task5();
+
+void task6();
+void task9();
+void task8();
+void task7();
+
 
 int main()
 {
-	double a;
-	double b;
-	double c;
-	double d;
-	double f;
-	cin >> a;
-	cin >> b;
-	cin >> c;
-	cin >> d;
-	cin >> f;
-	
-	cout << (a + b + c + d + f) / 5.;
+    showMenu();
 
-	return 0;
+    return 0;
+}
+
+void showMenu()
+{
+    while (true)
+    {
+        cout << "\n=== MENU ===\n";
+        cout << "1  - Variables" << endl;
+        cout << "2  - Data types" << endl;
+        cout << "3  - switch-case (mini game)" << endl;
+        cout << "4  - if-else (rock/paper/scissors)" << endl;
+        cout << "5  - while" << endl;
+        cout << "6  - for" << endl;
+        cout << "0  - Exit" << endl;
+        cout << "9  - Massive" << endl;
+        cout << "8  - SSilka" << endl;
+        cout << "7  - Ykazatel" << endl;
+
+        int item;
+        cin >> item;
+
+        if (item == 0) break;
+
+        switch (item)
+        {
+        case 1: task1();
+            break;
+        case 2: task2_1();
+            task2_2();
+            task2_3();
+            break;
+        case 3: task3();
+            break;
+        case 4: task4();
+            break;
+        case 5: task5();
+            break;
+
+        case 6: task6();
+            break;
+        case 9: task9();
+            break;
+        case 8: task8();
+            break;
+        case 7: task7();
+            break;
+
+
+        default: cout << "Invalid choice!" << endl;
+        }
+    }
+}
+
+void task1() {
+    string name;
+    int age;
+    cout << "Enter your name: ";
+    cin >> name;
+    cout << "Enter your age: ";
+    cin >> age;
+    cout << "Hi, " << name << "! In 10 years you will be " << age + 10 << " and you will already be a great programmer!" << endl;
+}
+
+void task2_1()
+{
+
+    double a;
+    double b;
+    double c;
+    double d;
+    double f;
+    cin >> a;
+    cin >> b;
+    cin >> c;
+    cin >> d;
+    cin >> f;
+
+    cout << (a + b + c + d + f) / 5.;
 
 
 }
-2.
-#include <string>
-#include <windows.h>
-#include <iostream>
-using namespace std;
-
-int main()
+void task2_2()
 {
-	
-	int b;
-	cout << "Write down your age";
-	cin >> b;
-	if (b <= 18)
-	{
+    bool j = true;
+    bool k = false;
+
+    int b;
+    cout << "Write down your age";
+    cin >> b;
+    if (b <= 18)
+    {
 
 
 
 
-		cout << " Your age is not 18, go out";
-		false;
+        cout << " Your age is not 18, go out";
+        k;
 
 
-	}
-	if ( b >= 18)
-	{
+    }
+    if (b >= 18)
+    {
 
-		cout << " go in";
-		true;
+        cout << " go in";
+        j;
 
 
-	}
+    }
+}
 
-	return 0;
+
+
+
+void task2_3()
+{
+    char b;
+    cin >> b;
+    cout << (int)b;
+}
+
+
+void task3()
+{
+
+    int a = 1;
+    int b = 2;
+    int c = 3;
+    int d = 4;
+    int arr[4]{ a,b,c,d };
+
+
+
+
+
+
+    cout << "Choose the action";
+    int y;
+    cin >> y;
+
+
+    if (y == 1)
+    {
+
+        cout << "You are meet the dragon, be careful!";
+
+
+    }
+    if (y == 2)
+    {
+
+        cout << "You find a golden chest, wow!";
+
+
+    }
+    if (y == 3)
+    {
+
+        cout << "You are meet a river,its good";
+
+
+    }
+    if (y == 4)
+    {
+
+        cout << "You are at your first position";
+
+
+    }
+    if (y > 4)
+    {
+
+        cout << "You have only 4 chooses";
+
+
+    }
 
 
 }
-3.
-#include <string>
-#include <windows.h>
-#include <iostream>
-using namespace std;
-
-int main()
+void task4()
 {
-
-	char b;
-	cin >> b;
-	cout << (int)b;
-
-
-
-}
-4.
-#include <string>
-#include <windows.h>
-#include <iostream>
-using namespace std;
-
-int main()
-{
-
-	
-	int a = 1;
-	int b = 2;
-	int c = 3;
-	int d = 4;
-	int arr[4]{ a,b,c,d };
-
-
-
-
-	
-
-	cout << "Choose the action";
-		int y;
-		cin >> y;
-
-	
-		if (y == 1)
-		{
-
-			cout << "You are meet the dragon, be careful!";
-
-
-		}
-		if (y == 2)
-		{
-
-			cout << "You find a golden chest, wow!";
-
-
-		}
-		if (y == 3)
-		{
-
-			cout << "You are meet a river,its good";
-
-
-		}
-		if (y == 4)
-		{
-
-			cout << "You are at your first position";
-
-
-		}
-		if (y > 4)
-		{
-
-			cout << "You have only 4 chooses";
-
-
-		}
-	
-
-
-	
-
-
-
-}
-5.
-#include <string>
-#include <windows.h>
-#include <cstdlib> 
-#include <iostream>
-#include <stdafx.h>
-#include <stdio.h>
-using namespace std;
-
-int main()
-{
-	
     string player;
     string options[3]{ "stone","cuts","paper" };
     srand(time(NULL));
@@ -182,33 +241,168 @@ int main()
         else
             cout << "computer is winner";
 
-}
-6.
-#include <string>
-#include <windows.h>
-#include <cstdlib> 
-#include <iostream>
-using namespace std;
 
-int main()
+}
+void task5()
 {
 
-	double b
-		
-		
-		;
-	double n = 0;
-	double monts = 0;
 
-	cin >> b;
-	int c = 1000;
-	while ( n < c)
-	{
-		n += b;
-		monts++;
+    double b
 
-	}
-	cout << monts;
-	return 0;
+
+        ;
+    double n = 0;
+    double monts = 0;
+
+    cin >> b;
+    int c = 1000;
+    while (n < c)
+    {
+        n += b;
+        monts++;
+
+    }
+    cout << monts;
+
+
 
 }
+
+void task6()
+{
+
+    int  count;
+    cout << " count =";
+    cin >> count;
+    char symbol = '#';
+
+
+    for (int i = 0; i < count; i++) {
+        std::cout << symbol;
+    }
+    std::cout << std::endl;
+}
+
+
+void task9()
+{
+
+
+
+
+
+
+    double a{};
+    double b{};
+    double c{};
+    double d{};
+    double f{};
+    double arr[5] = { a,b,c,d,f };
+    int max = arr[0];
+    int min = arr[0];
+
+    cout << "put first number";
+
+    cin >> a;
+    cout << "put second number";
+    cin >> b;
+
+    cout << "put third number";
+    cin >> c;
+    cout << "put fourth number";
+    cin >> d;
+    cout << "put fifth number";
+    cin >> f;
+    cout << " middle number will be " << (a + b + c + d + f) / 5. << endl;
+
+
+
+    for (int i = 0; i < 5; ++i) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    cout << "your max will be" << max << endl;
+    for (int i = 0; i < 5; ++i) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+
+    cout << "your min will be" << min << endl;
+}
+void task8()
+{
+    int x;
+    cout << "put x" << endl;
+    cin >> x;
+
+    int& y = x;
+    y = y + 10;
+    cout << y;
+    cout << x;
+
+}
+
+
+    void task7()
+    {
+        int temp;
+        cout << "Put temp";
+        cin >> temp;
+        int* ukazatel = &temp;
+
+
+    }
+    void task10()
+    {
+
+        
+        int levelup1;
+        cin >> levelup1;
+        if (levelup1 >= 0)
+        {
+
+            cout << "your level is 0" << endl;
+
+        }
+        int* temp;
+        int levelup3;
+        temp* = &levelup3;
+        if ( levelup3 > 1)
+        {
+            cout << "you cant level up more on 1";
+
+
+        }
+        int* levelup2;
+        cin >> *levelup2;
+        if (*levelup2 > 1)
+        {
+            cout << "you cant level up more on 1";
+
+
+        }
+
+       
+
+        int item;
+        cin >> item;
+
+        if (item == 0) break;
+
+        switch (item)
+        {
+        case 1: levelup1;
+            break;
+        case 2: levelup2;
+            
+            break;
+        case 3: levelup3;
+            break;
+
+
+
+        default: cout << "Invalid choice!" << endl;
+
+    }
