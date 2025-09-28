@@ -1,0 +1,200 @@
+#include <iostream>
+#include <string>
+#include <limits>
+
+using namespace std;
+
+const int SIZE_OF_STUDENTS = 100;
+
+struct Student
+{
+    string name;
+    string surname;
+    int age;
+};
+
+// Функция для очистки буфера ввода
+void clearInputBuffer() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+// Вывод меню
+void showMenu(Student *arr_of_students, int &number_of_students) {
+    cout << "\n=== МЕНЮ УПРАВЛЕНИЯ СТУДЕНТАМИ ===" << endl;
+    cout << "1. Заполнить массив студентами" << endl;
+    cout << "2. Добавить студента" << endl;
+    cout << "3. Удалить студента" << endl;
+    cout << "4. Изменить данные студента" << endl;
+    cout << "5. Показать всех студентов" << endl;
+    cout << "6. Выход" << endl;
+    cout << "Текущее количество студентов: " << number_of_students << "/" << SIZE_OF_STUDENTS << endl;
+    cout << "Выберите действие: ";
+}
+
+// Заполнение массива студентами
+void inputStudents(Student *arr_of_students, int &number_of_students) {
+    if (number_of_students >= SIZE_OF_STUDENTS) {
+        cout << "Массив студентов заполнен!" << endl;
+        return;
+    }
+    
+    int count;
+    cout << "Сколько студентов вы хотите добавить? (доступно мест: " 
+         << SIZE_OF_STUDENTS - number_of_students << "): ";
+    cin >> count;
+    
+    if (count <= 0 || count > SIZE_OF_STUDENTS - number_of_students) {
+        cout << "Некорректное количество!" << endl;
+        clearInputBuffer();
+        return;
+    }
+    
+    for (int i = 0; i < count; i++) {
+        cout << "\nСтудент " << i + 1 << ":" << endl;
+        cout << "Имя: ";
+        cin >> arr_of_students[number_of_students].name;
+        cout << "Фамилия: ";
+        cin >> arr_of_students[number_of_students].surname;
+        cout << "Возраст: ";
+        cin >> arr_of_students[number_of_students].age;
+        number_of_students++;
+    }
+    cout << "Добавлено " << count << " студентов." << endl;
+}
+
+// Добавление студента в массив
+void addStudent(Student *arr_of_students, int &number_of_students) {
+    if (number_of_students >= SIZE_OF_STUDENTS) {
+        cout << "Массив студентов заполнен! Невозможно добавить нового студента." << endl;
+        return;
+    }
+    
+    cout << "\nДобавление нового студента:" << endl;
+    cout << "Имя: ";
+    cin >> arr_of_students[number_of_students].name;
+    cout << "Фамилия: ";
+    cin >> arr_of_students[number_of_students].surname;
+    cout << "Возраст: ";
+    cin >> arr_of_students[number_of_students].age;
+    
+    number_of_students++;
+    cout << "Студент успешно добавлен!" << endl;
+}
+
+// Удаление студента из массива
+void delStudent(Student *arr_of_students, int &number_of_students) {
+    if (number_of_students == 0) {
+        cout << "Массив студентов пуст!" << endl;
+        return;
+    }
+    
+    showStudents(arr_of_students, number_of_students);
+    
+    int index;
+    cout << "Введите номер студента для удаления (1-" << number_of_students << "): ";
+    cin >> index;
+    
+    if (index < 1 || index > number_of_students) {
+        cout << "Некорректный номер!" << endl;
+        return;
+    }
+    
+    // Сдвигаем элементы массива
+    for (int i = index - 1; i < number_of_students - 1; i++) {
+        arr_of_students[i] = arr_of_students[i + 1];
+    }
+    
+    number_of_students--;
+    cout << "Студент успешно удален!" << endl;
+}
+
+// Изменение данных о студенте
+void changeStudent(Student *arr_of_students, int number_of_students) {
+    if (number_of_students == 0) {
+        cout << "Массив студентов пуст!" << endl;
+        return;
+    }
+    
+    showStudents(arr_of_students, number_of_students);
+    
+    int index;
+    cout << "Введите номер студента для изменения (1-" << number_of_students << "): ";
+    cin >> index;
+    
+    if (index < 1 || index > number_of_students) {
+        cout << "Некорректный номер!" << endl;
+        return;
+    }
+    
+    Student &student = arr_of_students[index - 1];
+    
+    cout << "\nТекущие данные студента:" << endl;
+    cout << "Имя: " << student.name << endl;
+    cout << "Фамилия: " << student.surname << endl;
+    cout << "Возраст: " << student.age << endl;
+    
+    cout << "\nВведите новые данные:" << endl;
+    cout << "Имя: ";
+    cin >> student.name;
+    cout << "Фамилия: ";
+    cin >> student.surname;
+    cout << "Возраст: ";
+    cin >> student.age;
+    
+    cout << "Данные студента успешно изменены!" << endl;
+}
+
+// Вывод содержимого массива на экран
+void showStudents(Student *arr_of_students, int number_of_students) {
+    if (number_of_students == 0) {
+        cout << "Массив студентов пуст!" << endl;
+        return;
+    }
+    
+    cout << "\n=== СПИСОК СТУДЕНТОВ ===" << endl;
+    for (int i = 0; i < number_of_students; i++) {
+        cout << i + 1 << ". " << arr_of_students[i].name << " " 
+             << arr_of_students[i].surname << ", возраст: " 
+             << arr_of_students[i].age << endl;
+    }
+}
+
+int main() {
+    // Локальный статический массив структур
+    static Student students[SIZE_OF_STUDENTS];
+    int number_of_students = 0;
+    
+    int choice;
+    
+    do {
+        showMenu(students, number_of_students);
+        cin >> choice;
+        clearInputBuffer();
+        
+        switch (choice) {
+            case 1:
+                inputStudents(students, number_of_students);
+                break;
+            case 2:
+                addStudent(students, number_of_students);
+                break;
+            case 3:
+                delStudent(students, number_of_students);
+                break;
+            case 4:
+                changeStudent(students, number_of_students);
+                break;
+            case 5:
+                showStudents(students, number_of_students);
+                break;
+            case 6:
+                cout << "Выход из программы..." << endl;
+                break;
+            default:
+                cout << "Некорректный выбор! Попробуйте снова." << endl;
+        }
+    } while (choice != 6);
+    
+    return 0;
+}
