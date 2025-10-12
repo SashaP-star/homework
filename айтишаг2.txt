@@ -2,10 +2,11 @@
 #include <string>
 #include <limits>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
-const int SIZE_OF_STUDENTS = 100;
+const int MAX_STUDENTS = 100;
 
 struct Student
 {
@@ -21,9 +22,9 @@ void clearInputBuffer() {
 }
 
 // Вывод меню
-void showMenu(Student *arr_of_students, int &number_of_students) {
+void showMenu(const vector<Student> &students) {
     cout << "\n=== МЕНЮ УПРАВЛЕНИЯ СТУДЕНТАМИ ===" << endl;
-    cout << "1. Заполнить массив студентами" << endl;
+    cout << "1. Заполнить список студентами" << endl;
     cout << "2. Добавить студента" << endl;
     cout << "3. Удалить студента" << endl;
     cout << "4. Изменить данные студента" << endl;
@@ -31,250 +32,291 @@ void showMenu(Student *arr_of_students, int &number_of_students) {
     cout << "6. Записать данные в файл" << endl;
     cout << "7. Прочитать данные из файла" << endl;
     cout << "8. Выход" << endl;
-    cout << "Текущее количество студентов: " << number_of_students << "/" << SIZE_OF_STUDENTS << endl;
+    cout << "Текущее количество студентов: " << students.size() << "/" << MAX_STUDENTS << endl;
     cout << "Выберите действие: ";
 }
 
-// Заполнение массива студентами
-void inputStudents(Student *arr_of_students, int &number_of_students) {
-    if (number_of_students >= SIZE_OF_STUDENTS) {
-        cout << "Массив студентов заполнен!" << endl;
+// Заполнение списка студентами
+void inputStudents(vector<Student> &students) {
+    if ((int)students.size() >= MAX_STUDENTS) {
+        cout << "Список студентов заполнен!" << endl;
         return;
     }
-    
+
     int count;
-    cout << "Сколько студентов вы хотите добавить? (доступно мест: " 
-         << SIZE_OF_STUDENTS - number_of_students << "): ";
-    cin >> count;
-    
-    if (count <= 0 || count > SIZE_OF_STUDENTS - number_of_students) {
+    cout << "Сколько студентов вы хотите добавить? (доступно мест: "
+         << MAX_STUDENTS - (int)students.size() << "): ";
+    if (!(cin >> count)) {
+        cout << "Некорректный ввод!" << endl;
+        clearInputBuffer();
+        return;
+    }
+
+    if (count <= 0 || count > MAX_STUDENTS - (int)students.size()) {
         cout << "Некорректное количество!" << endl;
         clearInputBuffer();
         return;
     }
-    
+
+    clearInputBuffer();
     for (int i = 0; i < count; i++) {
+        Student s;
         cout << "\nСтудент " << i + 1 << ":" << endl;
         cout << "Имя: ";
-        cin >> arr_of_students[number_of_students].name;
+        getline(cin, s.name);
         cout << "Фамилия: ";
-        cin >> arr_of_students[number_of_students].surname;
+        getline(cin, s.surname);
         cout << "Возраст: ";
-        cin >> arr_of_students[number_of_students].age;
-        number_of_students++;
+        while (!(cin >> s.age)) {
+            cout << "Некорректный возраст. Введите число: ";
+            clearInputBuffer();
+        }
+        clearInputBuffer();
+        students.push_back(s);
     }
     cout << "Добавлено " << count << " студентов." << endl;
 }
 
-// Добавление студента в массив
-void addStudent(Student *arr_of_students, int &number_of_students) {
-    if (number_of_students >= SIZE_OF_STUDENTS) {
-        cout << "Массив студентов заполнен! Невозможно добавить нового студента." << endl;
+// Добавление студента в список
+void addStudent(vector<Student> &students) {
+    if ((int)students.size() >= MAX_STUDENTS) {
+        cout << "Список студентов заполнен! Невозможно добавить нового студента." << endl;
         return;
     }
-    
+
+    Student s;
+    clearInputBuffer();
     cout << "\nДобавление нового студента:" << endl;
     cout << "Имя: ";
-    cin >> arr_of_students[number_of_students].name;
+    getline(cin, s.name);
     cout << "Фамилия: ";
-    cin >> arr_of_students[number_of_students].surname;
+    getline(cin, s.surname);
     cout << "Возраст: ";
-    cin >> arr_of_students[number_of_students].age;
-    
-    number_of_students++;
+    while (!(cin >> s.age)) {
+        cout << "Некорректный возраст. Введите число: ";
+        clearInputBuffer();
+    }
+    clearInputBuffer();
+
+    students.push_back(s);
     cout << "Студент успешно добавлен!" << endl;
 }
 
-// Удаление студента из массива
-void delStudent(Student *arr_of_students, int &number_of_students) {
-    if (number_of_students == 0) {
-        cout << "Массив студентов пуст!" << endl;
+// Удаление студента из списка
+void delStudent(vector<Student> &students) {
+    if (students.empty()) {
+        cout << "Список студентов пуст!" << endl;
         return;
     }
-    
-    showStudents(arr_of_students, number_of_students);
-    
+
+    // Покажем список
+    cout << "\n=== СПИСОК СТУДЕНТОВ ===" << endl;
+    for (size_t i = 0; i < students.size(); ++i) {
+        cout << i + 1 << ". " << students[i].name << " "
+             << students[i].surname << ", возраст: "
+             << students[i].age << endl;
+    }
+
     int index;
-    cout << "Введите номер студента для удаления (1-" << number_of_students << "): ";
-    cin >> index;
-    
-    if (index < 1 || index > number_of_students) {
+    cout << "Введите номер студента для удаления (1-" << students.size() << "): ";
+    if (!(cin >> index)) {
+        cout << "Некорректный ввод!" << endl;
+        clearInputBuffer();
+        return;
+    }
+
+    if (index < 1 || index > (int)students.size()) {
         cout << "Некорректный номер!" << endl;
         return;
     }
-    
-    // Сдвигаем элементы массива
-    for (int i = index - 1; i < number_of_students - 1; i++) {
-        arr_of_students[i] = arr_of_students[i + 1];
-    }
-    
-    number_of_students--;
+
+    students.erase(students.begin() + (index - 1));
     cout << "Студент успешно удален!" << endl;
 }
 
 // Изменение данных о студенте
-void changeStudent(Student *arr_of_students, int number_of_students) {
-    if (number_of_students == 0) {
-        cout << "Массив студентов пуст!" << endl;
+void changeStudent(vector<Student> &students) {
+    if (students.empty()) {
+        cout << "Список студентов пуст!" << endl;
         return;
     }
-    
-    showStudents(arr_of_students, number_of_students);
-    
+
+    // Покажем список
+    cout << "\n=== СПИСОК СТУДЕНТОВ ===" << endl;
+    for (size_t i = 0; i < students.size(); ++i) {
+        cout << i + 1 << ". " << students[i].name << " "
+             << students[i].surname << ", возраст: "
+             << students[i].age << endl;
+    }
+
     int index;
-    cout << "Введите номер студента для изменения (1-" << number_of_students << "): ";
-    cin >> index;
-    
-    if (index < 1 || index > number_of_students) {
+    cout << "Введите номер студента для изменения (1-" << students.size() << "): ";
+    if (!(cin >> index)) {
+        cout << "Некорректный ввод!" << endl;
+        clearInputBuffer();
+        return;
+    }
+
+    if (index < 1 || index > (int)students.size()) {
         cout << "Некорректный номер!" << endl;
         return;
     }
-    
-    Student &student = arr_of_students[index - 1];
-    
+
+    Student &student = students[index - 1];
+
     cout << "\nТекущие данные студента:" << endl;
     cout << "Имя: " << student.name << endl;
     cout << "Фамилия: " << student.surname << endl;
     cout << "Возраст: " << student.age << endl;
-    
+
+    clearInputBuffer();
     cout << "\nВведите новые данные:" << endl;
     cout << "Имя: ";
-    cin >> student.name;
+    getline(cin, student.name);
     cout << "Фамилия: ";
-    cin >> student.surname;
+    getline(cin, student.surname);
     cout << "Возраст: ";
-    cin >> student.age;
-    
+    while (!(cin >> student.age)) {
+        cout << "Некорректный возраст. Введите число: ";
+        clearInputBuffer();
+    }
+    clearInputBuffer();
+
     cout << "Данные студента успешно изменены!" << endl;
 }
 
-// Вывод содержимого массива на экран
-void showStudents(Student *arr_of_students, int number_of_students) {
-    if (number_of_students == 0) {
-        cout << "Массив студентов пуст!" << endl;
+// Вывод содержимого списка на экран
+void showStudents(const vector<Student> &students) {
+    if (students.empty()) {
+        cout << "Список студентов пуст!" << endl;
         return;
     }
-    
+
     cout << "\n=== СПИСОК СТУДЕНТОВ ===" << endl;
-    for (int i = 0; i < number_of_students; i++) {
-        cout << i + 1 << ". " << arr_of_students[i].name << " " 
-             << arr_of_students[i].surname << ", возраст: " 
-             << arr_of_students[i].age << endl;
+    for (size_t i = 0; i < students.size(); ++i) {
+        cout << i + 1 << ". " << students[i].name << " "
+             << students[i].surname << ", возраст: "
+             << students[i].age << endl;
     }
 }
 
-// Запись в файл (если что-то было в файле, то исходные данные будут удалены)
-void writeFileStudents(Student* arr_of_students, int number_of_students) {
-    if (number_of_students == 0) {
+// Запись в файл (перезаписывает файл)
+void writeFileStudents(const vector<Student> &students) {
+    if (students.empty()) {
         cout << "Нет данных для записи в файл!" << endl;
         return;
     }
-    
+
     string filename;
     cout << "Введите имя файла для записи: ";
     cin >> filename;
-    
+
     ofstream file(filename);
     if (!file.is_open()) {
         cout << "Ошибка открытия файла для записи!" << endl;
         return;
     }
-    
-    // Записываем количество студентов первой строкой
-    file << number_of_students << endl;
-    
-    // Записываем данные каждого студента
-    for (int i = 0; i < number_of_students; i++) {
-        file << arr_of_students[i].name << endl;
-        file << arr_of_students[i].surname << endl;
-        file << arr_of_students[i].age << endl;
+
+    file << students.size() << endl;
+    for (const auto &s : students) {
+        file << s.name << endl;
+        file << s.surname << endl;
+        file << s.age << endl;
     }
-    
+
     file.close();
     cout << "Данные успешно записаны в файл '" << filename << "'" << endl;
 }
 
-// Чтение из файла в массив
-void readFileStudents(Student* arr_of_students, int& number_of_students) {
+// Чтение из файла в список (добавляет в существующий список, проверяет лимит)
+void readFileStudents(vector<Student> &students) {
     string filename;
     cout << "Введите имя файла для чтения: ";
     cin >> filename;
-    
+
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Ошибка открытия файла для чтения!" << endl;
         return;
     }
-    
+
     int file_student_count;
-    file >> file_student_count;
-    
-    if (file_student_count <= 0 || file_student_count > SIZE_OF_STUDENTS) {
+    if (!(file >> file_student_count)) {
+        cout << "Ошибка чтения количества студентов в файле!" << endl;
+        file.close();
+        return;
+    }
+
+    if (file_student_count <= 0 || file_student_count > MAX_STUDENTS) {
         cout << "Некорректное количество студентов в файле!" << endl;
         file.close();
         return;
     }
-    
-    if (number_of_students + file_student_count > SIZE_OF_STUDENTS) {
-        cout << "Недостаточно места в массиве для загрузки всех студентов из файла!" << endl;
-        cout << "Доступно мест: " << SIZE_OF_STUDENTS - number_of_students << endl;
+
+    if ((int)students.size() + file_student_count > MAX_STUDENTS) {
+        cout << "Недостаточно места в списке для загрузки всех студентов из файла!" << endl;
+        cout << "Доступно мест: " << MAX_STUDENTS - (int)students.size() << endl;
         file.close();
         return;
     }
-    
-    // Очищаем символ новой строки после чтения числа
-    file.ignore();
-    
-    int initial_count = number_of_students;
-    
-    for (int i = 0; i < file_student_count; i++) {
-        getline(file, arr_of_students[number_of_students].name);
-        getline(file, arr_of_students[number_of_students].surname);
-        
+
+    file.ignore(numeric_limits<streamsize>::max(), '\n'); // очистим остаток строки
+
+    int initial_count = students.size();
+    for (int i = 0; i < file_student_count; ++i) {
+        Student s;
+        getline(file, s.name);
+        getline(file, s.surname);
         string age_str;
         getline(file, age_str);
-        arr_of_students[number_of_students].age = stoi(age_str);
-        
-        number_of_students++;
+        try {
+            s.age = stoi(age_str);
+        } catch (...) {
+            s.age = 0;
+        }
+        students.push_back(s);
     }
-    
+
     file.close();
-    cout << "Загружено " << (number_of_students - initial_count) << " студентов из файла '" << filename << "'" << endl;
+    cout << "Загружено " << (students.size() - initial_count) << " студентов из файла '" << filename << "'" << endl;
 }
 
 int main() {
-    // Локальный статический массив структур
-    static Student students[SIZE_OF_STUDENTS];
-    int number_of_students = 0;
-    
+    vector<Student> students;
+    students.reserve(MAX_STUDENTS);
+
     int choice;
-    
+
     do {
-        showMenu(students, number_of_students);
-        cin >> choice;
+        showMenu(students);
+        if (!(cin >> choice)) {
+            cout << "Некорректный ввод! Попробуйте снова." << endl;
+            clearInputBuffer();
+            continue;
+        }
         clearInputBuffer();
-        
+
         switch (choice) {
             case 1:
-                inputStudents(students, number_of_students);
+                inputStudents(students);
                 break;
             case 2:
-                addStudent(students, number_of_students);
+                addStudent(students);
                 break;
             case 3:
-                delStudent(students, number_of_students);
+                delStudent(students);
                 break;
             case 4:
-                changeStudent(students, number_of_students);
+                changeStudent(students);
                 break;
             case 5:
-                showStudents(students, number_of_students);
+                showStudents(students);
                 break;
             case 6:
-                writeFileStudents(students, number_of_students);
+                writeFileStudents(students);
                 break;
             case 7:
-                readFileStudents(students, number_of_students);
+                readFileStudents(students);
                 break;
             case 8:
                 cout << "Выход из программы..." << endl;
@@ -283,6 +325,5 @@ int main() {
                 cout << "Некорректный выбор! Попробуйте снова." << endl;
         }
     } while (choice != 8);
-    
+
     return 0;
-}
