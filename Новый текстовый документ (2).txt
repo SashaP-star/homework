@@ -1,0 +1,223 @@
+1)#include <iostream>
+#include <string>
+#include <windows.h>
+using namespace std;
+class BankAccount
+{
+private:
+	string owner;
+	double balance;
+public:
+    BankAccount(string n, double count = 0)
+        : owner(n),  balance(count)
+    {
+        if (balance < 0)
+
+
+            cout << "Balance cant be < 0";
+    }
+
+    BankAccount()
+        : BankAccount("Unkown",  0)
+    {
+    }
+    bool deposit(double amount)
+    {
+        if (amount <= 0) {
+            cout << "Невозможно внести отрицательную сумму!" << endl;
+            return false;
+        }
+        else {
+            balance += amount;
+            cout << "Успешно внесено: " << amount << ". Новый баланс: " << balance << endl;
+            return true;
+        }
+    }
+    bool getMoney(double amount2)
+    {
+        //Функция снимает деньги со счета
+        if (amount2 <= 0)
+        {
+            cout << "Невозможно внести отрицательную сумму!" << endl;
+            return false;
+
+
+        }
+        else if(amount2<balance)
+        {
+            cout << "Баланс слишком маленький!" << endl;
+            return false;
+
+
+        }
+        else
+        {
+
+            balance -= amount2;
+            cout << "Успешно снято: " << amount2 << ". Новый баланс: " << balance << endl;
+            return true;
+
+        }
+
+
+
+    }
+    void input()
+    {
+        cout << "Введите имя владельца: ";
+        getline(cin, owner);
+        cout << "Введите начальный баланс: ";
+        cin >> balance;
+        cin.ignore(); 
+        if (balance < 0) {
+            cout << "Баланс не может быть меньше 0. Установлен в 0." << endl;
+            balance = 0;
+        }
+    }
+    void display() const
+    {
+        cout << "Владелец: " << owner << ", Баланс: " << balance << endl;
+    }
+
+
+};
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    BankAccount account;
+    
+    
+    account.input();
+    double amount;
+    cout << "Введите сумму для внесения: ";
+    cin >> amount;
+    account.deposit(amount); 
+    double amount2;
+    cout << "Введите сумму для вычитания: ";
+    cin >> amount2;
+    account.getMoney(amount2);
+}
+2)
+#include <iostream>
+#include <string>
+#include <windows.h>
+using namespace std;
+class Pet
+{
+private:
+	string name;
+	string type;
+	int age;
+	int mood;
+    int max = 100;
+public:
+    Pet(string n, string t, int a, int m)
+        : name(n), type(t), age(a), mood(m)
+    {}
+
+    Pet()
+        : Pet("Unkown", "Unkown", 0,50)
+    {
+    }
+   void feed()
+    {
+        cout << "Хочешь покормить питомца? r - да, t - нет: ";
+        string a;
+        cin >> a;
+        if (a == "r") {
+            mood += 10;
+            if (mood > 100)
+            {
+                cout << "Настроение на максимуме.";
+                mood == 100;
+
+
+            }
+            cout << "Ты покормил " << type << " по имени " << name << ". Настроение +10. Текущее настроение: " << mood << endl;
+        }
+        else if (a == "t") {
+            cout << "Ты решил не кормить питомца." << endl;
+        }
+        else {
+            cout << "Неверный ввод. Пожалуйста, выбери 'r' или 't'." << endl;
+        }
+    
+    }
+    void play()
+    {
+        cout << "Хочешь поиграть с питомцем? r - да, t- нет";
+        string b;
+        cin >> b;
+        if (b == "r") {
+            mood += 20;
+            if (mood > 100)
+            {
+                cout << "Настроение на максимуме.";
+                mood == 100;
+
+
+            }
+            
+            cout << "Ты поиграл с " << type << " по имени " << name << ". Настроение +20. Текущее настроение: " << mood << endl;
+        }
+        else if (b == "t") {
+            cout << "Ты решил не играть с питомцем." << endl;
+        }
+        else {
+            cout << "Неверный ввод. Пожалуйста, выбери 'r' или 't'." << endl;
+        }
+
+
+    }
+    void sleep()
+    {
+        cout << "Твой питомец устал, и приляг отдохнуть" << endl;
+        mood -= 5;
+        if (mood < 5)
+        {
+            cout << name << "Очень устал как так можно" << endl;
+
+
+        }
+
+
+    }
+    void display() const {
+        cout << "Имя: " <<endl <<  name <<endl<< ", Тип: " << endl<<type << endl<<", Возраст: " <<endl<< age <<endl<< ", Настроение: "<< endl<< mood << endl;
+    }
+
+    
+
+    void input() {
+        cout << "Введите имя питомца: ";
+        getline(cin, name);
+        cout << "Введите тип питомца: ";
+        getline(cin, type);
+        cout << "Введите возраст питомца: ";
+        cin >> age;
+        cout << "Введите начальное настроение (0–100): ";
+        cin >> mood;
+        cin.ignore(); 
+    }
+
+
+
+
+};
+int main()
+{
+
+
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    Pet myPet;
+    myPet.input();
+    
+    
+    myPet.feed();
+    myPet.display();
+    
+    myPet.sleep();
+    myPet.play();
+}
